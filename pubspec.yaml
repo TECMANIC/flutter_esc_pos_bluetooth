@@ -9,8 +9,7 @@ dependencies:
   flutter:
     sdk: flutter
   rxdart: ^0.26.0
-  flutter_blue:
-    git: git://github.com/pauldemarco/flutter_blue.git
+  flutter_blue_plus: ^1.4.0
 
 dev_dependencies:
   flutter_test:
