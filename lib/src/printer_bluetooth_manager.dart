@@ -30,7 +30,7 @@ class PrinterBluetooth {
 
 /// Printer Bluetooth Manager
 class PrinterBluetoothManager {
-  final FlutterBlue _flutterBlue = FlutterBlue.instance;
+  final FlutterBluePlus _flutterBlue = FlutterBluePlus.instance;
   bool _isPrinting = false;
   bool _isConnected = false;
 
