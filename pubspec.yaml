@@ -3,13 +3,13 @@ description: The library allows to print receipts using an ESC/POS thermal Bluet
 version: 0.2.8
 homepage: https://github.com/andrey-ushakov/esc_pos_bluetooth
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=3.0.5 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
   rxdart: ^0.27.5
-  flutter_blue_plus: ^1.4.0
+  flutter_blue_plus: ^1.10.0
 
 dev_dependencies:
   flutter_test:

@@ -23,14 +23,13 @@ class PrinterBluetooth {
     this._deviceName = val;
   }
 
-  String get name => _device.name;
-  String get address => _device.id.id;
+  String get name => _device.localName;
+  String get address => _device.remoteId.str;
   int get type => _device.type.index;
 }
 
 /// Printer Bluetooth Manager
 class PrinterBluetoothManager {
-  final FlutterBluePlus _flutterBlue = FlutterBluePlus.instance;
   bool _isPrinting = false;
   bool _isConnected = false;
 
@@ -53,16 +52,16 @@ class PrinterBluetoothManager {
   void startScan(Duration timeout) async {
     _scanResults.add(<PrinterBluetooth>[]);
 
-    _flutterBlue.startScan(timeout: timeout);
+    FlutterBluePlus.startScan(timeout: timeout);
 
-    _scanResultsSubscription = _flutterBlue.scanResults.listen((devices) {
+    _scanResultsSubscription = FlutterBluePlus.scanResults.listen((devices) {
       _scanResults.add(devices.map((d) => PrinterBluetooth(d.device)).toList());
     });
 
     _isScanningSubscription =
-        _flutterBlue.isScanning.listen((isScanningCurrent) async {
+        FlutterBluePlus.isScanning.listen((isScanningCurrent) async {
           // If isScanning value changed (scan just stopped)
-          if (_isScanning.value! && !isScanningCurrent) {
+          if (_isScanning.value && !isScanningCurrent) {
             _scanResultsSubscription.cancel();
             _isScanningSubscription.cancel();
           }
@@ -71,7 +70,7 @@ class PrinterBluetoothManager {
   }
 
   void stopScan() async {
-    await _flutterBlue.stopScan();
+    await FlutterBluePlus.stopScan();
   }
 
   void selectPrinter(PrinterBluetooth printer) {
@@ -90,11 +89,10 @@ class PrinterBluetoothManager {
       }) async {
     final Completer<PosPrintResult> completer = Completer();
 
-    const int timeout = 5;
     if (_selectedPrinter == null) {
       print(1);
       return Future<PosPrintResult>.value(PosPrintResult.printerNotSelected);
-    } else if (_isScanning.value!) {
+    } else if (_isScanning.value) {
       print(2);
       return Future<PosPrintResult>.value(PosPrintResult.scanInProgress);
     } else if (_isPrinting) {
@@ -237,7 +235,7 @@ class PrinterBluetoothManager {
         int chunkSizeBytes = 20,
         int queueSleepTimeMs = 20,
       }) async {
-    if (bytes == null || bytes.isEmpty) {
+    if (bytes.isEmpty) {
       return Future<PosPrintResult>.value(PosPrintResult.ticketEmpty);
     }
     return writeBytes(
