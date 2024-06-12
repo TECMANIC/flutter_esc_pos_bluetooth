@@ -23,9 +23,8 @@ class PrinterBluetooth {
     this._deviceName = val;
   }
 
-  String get name => _device.localName;
+  String get name => _device.platformName;
   String get address => _device.remoteId.str;
-  int get type => _device.type.index;
 }
 
 /// Printer Bluetooth Manager
